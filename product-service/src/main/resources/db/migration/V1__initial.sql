@@ -1,0 +1,28 @@
+CREATE SEQUENCE store_id_seq
+    START WITH 1
+    MAXVALUE 9223372036854775807
+    MINVALUE 0;
+
+CREATE TABLE IF NOT EXISTS stores (
+    id NUMERIC(20) PRIMARY KEY
+        DEFAULT NEXTVAL('store_id_seq'::REGCLASS) NOT NULL,
+    name VARCHAR(40) not null,
+    created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE SEQUENCE product_id_seq
+    START WITH 1
+    MAXVALUE 9223372036854775807
+    MINVALUE 0;
+
+CREATE TABLE IF NOT EXISTS products (
+    id NUMERIC(20) PRIMARY KEY
+        DEFAULT NEXTVAL('product_id_seq'::REGCLASS) NOT NULL,
+    name VARCHAR(40) not null,
+    quantity NUMERIC(20) not null default 0,
+    created TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    store_id NUMERIC(20) NOT NULL,
+        CONSTRAINT stores_fk
+            FOREIGN KEY (store_id)
+                REFERENCES stores(id)
+);
