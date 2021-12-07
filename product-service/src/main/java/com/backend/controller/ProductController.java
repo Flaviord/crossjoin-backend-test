@@ -1,6 +1,7 @@
 package com.backend.controller;
 
 import com.backend.entities.Product;
+import com.backend.exceptions.ResourceNotFoundException;
 import com.backend.rest.request.ProductRequest;
 import com.backend.services.ProductService;
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +15,12 @@ import java.util.List;
 @RequestMapping("/product")
 public class ProductController {
 
+    private final ProductService productService;
+
     @Autowired
-    private ProductService productService;
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
 
     @GetMapping
     public List<Product> allProducts() {
@@ -24,11 +29,19 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public Product getProductById(@PathVariable Long id) {
-        return productService.getProductById(id);
+        Product productById = productService.getProductById(id);
+        if (productById == null) {
+            throw new ResourceNotFoundException("Product not found");
+        }
+        return productById;
     }
 
     @PostMapping("/{id}")
-    public Product save(@RequestBody ProductRequest request) {
+    public Product save(@PathVariable Long id, @RequestBody ProductRequest request) {
+        Product productById = productService.getProductById(id);
+        if (productById == null) {
+            throw new ResourceNotFoundException("Product not found");
+        }
         return productService.save(request);
     }
 }

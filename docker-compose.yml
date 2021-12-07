@@ -19,7 +19,7 @@ services:
   api:
     container_name: spring-boot-docker
     image: spring-boot-docker
-    build: ./product-service/
+    build: .
     depends_on:
       - db
     networks:

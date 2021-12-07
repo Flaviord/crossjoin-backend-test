@@ -1,14 +1,12 @@
 package com.backend.rest.request;
 
+import com.sun.istack.NotNull;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.Date;
 
 @Builder
 @Data
 public class StoreRequest {
-    Long id;
+    @NotNull
     String name;
-    Date created;
 }

@@ -12,8 +12,12 @@ import java.util.List;
 @Service
 public class StoreService {
 
+    private final StoreRepository storeRepository;
+
     @Autowired
-    private StoreRepository storeRepository;
+    public StoreService(StoreRepository storeRepository) {
+        this.storeRepository = storeRepository;
+    }
 
     public List<Store> getAllStore() {
         return storeRepository.findAll();
